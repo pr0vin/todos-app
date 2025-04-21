@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -44,17 +45,28 @@ class AuthController extends Controller
 
     public function storeRegisterData(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'profile_image' => 'nullable',
         ]);
+
+
+        if ($request->file('profile_image')) {
+
+            $path = Storage::putFile('profiles', $request->file('profile_image'));
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'profile_image' => $path ?? null,
         ]);
+
+
 
         return redirect()->route('users.index')->with('success', 'User registered successfully');
     }
@@ -88,7 +100,11 @@ class AuthController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        if ($user->profile_image) {
+            Storage::delete($user->profile_image);
+        }
         $user->delete();
+
 
         return redirect('/')->with('success', 'User deleted successfully');
     }

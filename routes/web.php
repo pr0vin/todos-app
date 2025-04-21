@@ -26,6 +26,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/list', function () {
 
     $users = User::all(); //select * from table users
+
     return view('users.index', compact('users'));
 })->name('users.index');
 

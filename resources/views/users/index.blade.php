@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Profile Image</th>
             <th>Name</th>
             <th>Email</th>
             <th>Created At</th>
@@ -17,6 +18,12 @@
         @foreach ($users as $user)
         <tr>
             <td>{{ $user->id }}</td>
+            <td>
+                @if ($user->profile_image)
+                <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile Image" style="width: 50px; height: 50px; border-radius: 50%;">
+                @else
+                <img src="{{ asset('images/default.png') }}" alt="Default Image" style="width: 50px; height: 50px; border-radius: 50%;">
+                @endif
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->created_at }}</td>
