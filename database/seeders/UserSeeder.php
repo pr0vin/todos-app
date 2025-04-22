@@ -8,6 +8,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -17,12 +18,18 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
+        $role = Role::findOrCreate('admin');
 
-        User::create([
+        $user = User::create([
             'name' => "Pravin",
             'email' => "prvn@gmail.com",
             'password' => Hash::make('password')
         ]);
+
+        $user->assignRole($role);
+        // $user->syncRoles([$role]);
+
+
 
 
         $data = ['cat-1', 'cat-2', 'cat-3', 'cat-4', 'cat-5'];

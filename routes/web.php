@@ -25,12 +25,12 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/list', function () {
 
-    $users = User::all(); //select * from table users
+    $users = User::with('roles')->get(); //select * from table users
 
     return view('users.index', compact('users'));
 })->name('users.index');
 
-Route::get('categories', [CategoryController::class, 'index'])->name('categories.index')->middleware('auth');
+Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 
 
 Route::get('products', [ProductController::class, 'index'])->name('products.index');

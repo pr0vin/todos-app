@@ -1529,7 +1529,9 @@
 
         @auth
         <a href="{{route('logout')}}"> logout</a>
+        @hasanyrole('admin')
         <a href="{{url('/list')}}">got to List</a>
+        @endhasanyrole
         @endauth
         @guest
         <a href="{{url('/register')}}">got to register</a>
